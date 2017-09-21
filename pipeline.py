@@ -1,17 +1,17 @@
 import argparse
 import jellyfish
 import csv
-from sklearn import linear_model, ensemble, svm
 import random
 import os.path
 import pickle
 import ngram
 import datetime
+from sklearn import linear_model, ensemble, svm
 
 
 def main():
 	parser = argparse.ArgumentParser(description='Process.')
-	parser.add_argument('--input', help='an integer for the accumulator')
+	parser.add_argument('--input', help='enter the file which has all candidate pairs')
 	parser.add_argument('--output', help='an integer for the accumulator')
 	parser.add_argument('--goldstan', help='an integer for the accumulator')
 	parser.add_argument('--num', help='an integer for the accumulator')
