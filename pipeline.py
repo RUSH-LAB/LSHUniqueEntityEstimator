@@ -1,43 +1,15 @@
 import argparse
-import jellyfish
 import csv
 import random
 import os.path
 import pickle
 import ngram
 import datetime
+import unionfind
 from sklearn import linear_model, ensemble, svm
 
 
-def main():
-	parser = argparse.ArgumentParser(description='Process.')
-	parser.add_argument('--input', help='enter the file which has all candidate pairs')
-	parser.add_argument('--output', help='an integer for the accumulator')
-	parser.add_argument('--goldstan', help='an integer for the accumulator')
-	parser.add_argument('--num', help='an integer for the accumulator')
-
-	args = parser.parse_args()
-
-	#similarity stage
-	candidates,matrix, Allpair, Total, raw, goldPairs = calculate_sim(args.input, args.goldstan, args.sim)
-
-	#random forests stage
-	predict_random = []
-	predict_hashing = []
-
-	with open(args.output, 'a+') as write:
-		writer = csv.writer(write, delimiter=' ')
-		for i in range(100):
-			#print "-------------------------------------------------------------"
-			estimate_random, estimate_hashing = random_forest(matrix, candidates, Allpair, Total, raw, goldPairs)
-			if estimate_random<1000000:
-				predict_random.append(estimate_random)
-			predict_hashing.append(estimate_hashing)
-			writer.writerow([args.num, estimate_random, estimate_hashing])
-			print args.num, estimate_random, estimate_hashing
-
-
-def calculate_sim(inputf, standard, sim):
+def preprocess(inputf, standard):
 	raw = {}
 	#read raw data
 	Allpair = {}
@@ -50,12 +22,11 @@ def calculate_sim(inputf, standard, sim):
 				Allpair[row[-1]].append(i)
 			else:
 				Allpair[row[-1]] = [i]
-
 			raw[i] = row
 			i+=1
 	Total = len(raw)
 
-	#creat all pairs
+	#save all real pairs
 	goldPairs = []
 	for cluster in Allpair:
 		if len(Allpair[cluster])>1:
@@ -63,22 +34,26 @@ def calculate_sim(inputf, standard, sim):
 			for i in range(len(values)):
 				for j in range(i+1, len(values)):
 					goldPairs.append((values[i], values[j]))
+
 	#read candidate pairs
-	matrix = {}
 	candidates = []
+	scores = []
 	with open(inputf, 'rb') as candidate:
-		reader = csv.reader(candidate, delimiter=',')
+		reader = csv.reader(candidate, delimiter=' ')
 		reader.next()
 		for row in reader:
 			candidates.append((int(row[0]),int(row[1])))
-			matrix[(int(row[0]), int(row[1]))] = cal_score(int(row[0]), int(row[1]), raw)
-	return  candidates, matrix, Allpair, Total, raw, goldPairs
+			datapoint = cal_score(int(row[0]), int(row[1]), raw, len(raw[1])-1)
+			scores.append(datapoint)
+
+	return  candidates, Allpair, Total, raw, goldPairs, scores
 
 
-def random_forest(matrix, candidates, Allpair, Total, raw, goldPairs):
+def estimate(candidates, Total, raw, goldPairs, trainsize, scores, flag):
 	#split train and test
-	posnum = 1000
-	negnum = 1000
+	posnum = int(float(trainsize)*len(goldPairs))
+	negnum = posnum
+
 	poslist = []
 	poslabels = []
 	pospair = []
@@ -107,8 +82,8 @@ def random_forest(matrix, candidates, Allpair, Total, raw, goldPairs):
 	randomlist = {}
 	random.shuffle(goldPairs)
 	for i in range(posnum):
-		datapoint = cal_score(goldPairs[i][0], goldPairs[i][1], raw)
-		poslist.append(datapoint)
+		datapoint = cal_score(goldPairs[i][0], goldPairs[i][1], raw, len(raw[1])-1)
+		poslist.append(datapoint[1:])
 		poslabels.append(datapoint[0])
 		pospair.append((goldPairs[i][0], goldPairs[i][1]))
 
@@ -122,8 +97,8 @@ def random_forest(matrix, candidates, Allpair, Total, raw, goldPairs):
 		bmin = min(a, b)
 		if raw[a][-1]!=raw[b][-1]:
 			count+=1
-			datapoint = cal_score(bmin, amax, raw)
-			neglist.append(datapoint)
+			datapoint = cal_score(bmin, amax, raw, len(raw[1])-1)
+			neglist.append(datapoint[1:])
 			neglabels.append(datapoint[0])
 			negpair.append((bmin, amax))
 
@@ -134,13 +109,13 @@ def random_forest(matrix, candidates, Allpair, Total, raw, goldPairs):
 	testlist = poslist[posnum/2:]+neglist[negnum/2:]
 	testlabels = poslabels[posnum/2:]+neglabels[negnum/2:]
 	test_pair = pospair[posnum/2:]+negpair[negnum/2:]
-	t=0
-	a = datetime.datetime.now()
+
+
 	for i in range(len(candidates)):
-		t+=1
-		datapoint = cal_score(candidates[i][0], candidates[i][1], raw)
-		if t==10000:
-			print datetime.datetime.now()-a
+		datapoint = scores[i]
+		hashinglist.append(datapoint[1:])
+		hashinglabels.append(datapoint[0])
+		hashing_pair.append(candidates[i])
 
 	for i in range(len(candidates)):
 		a = random.randint(1, len(raw)-1)
@@ -149,8 +124,8 @@ def random_forest(matrix, candidates, Allpair, Total, raw, goldPairs):
 			b = random.randint(1, len(raw)-1)
 		amax = max(a, b)
 		bmin = min(a, b)
-		datapoint = cal_score(bmin, amax, raw)
-		randomresultlist.append(datapoint[1:81])
+		datapoint = cal_score(bmin, amax, raw, len(raw[1])-1)
+		randomresultlist.append(datapoint[1:])
 		randomresultlabels.append(datapoint[0])
 		random_pair.append((bmin, amax))
 
@@ -173,98 +148,120 @@ def random_forest(matrix, candidates, Allpair, Total, raw, goldPairs):
 	if random_recall == 'inf':
 		estimate_random = random_recall
 	else:
-		estimate_random = probability(randomselection, random_recall, random_pair, raw)
+		estimate_random = probability(randomselection, random_recall, random_pair, raw, int(flag))
 
 	hashing_recall = calculate_pr( hashingselection, testresultlist,trainlabels+testlabels, train_pair+test_pair, hashing_pair, raw)
-	estimate_hashing = probability(hashingselection, hashing_recall, hashing_pair, raw)
+	estimate_hashing = probability(hashingselection, hashing_recall, hashing_pair, raw, int(flag))
 
 	return estimate_random, estimate_hashing
 
 
-def cal_score(i, j, raw):
+def cal_score(i, j, raw, length):
 	result = [int(raw[i][-1]==raw[j][-1])]
 	candidate1 = raw[i]
 	candidate2 = raw[j]
-	for i in range(min(len(candidate1), len(candidate2))-1):
-		score = ngram.NGram.compare(candidate1[i], candidate2[i], N=3)
+	for index in range(length):
+		score = ngram.NGram.compare(candidate1[index], candidate2[index], N=3)
 		result.append(score)
 	return result
 
 
-def probability(result, p, c_pair, raw):
+def union_find(lis, n):
+	u = unionfind.unionfind(n+1)
+	for pair in lis:
+		u.unite(pair[0], pair[1])
+	return u.sizes()
+
+
+def probability(result, p, c_pair, raw, flag):
 	cluster = {}
 	neighbors = {}
 	checklist = []
 	j = 0
 
-	for i in range(len(c_pair)):
-		if result[i]==1:
-			checklist.append(c_pair[i])
-		j+=1
+	if flag:
+		for i in range(len(c_pair)):
+			if result[i]==1:
+				checklist.append(c_pair[i])
+			j+=1
+	else:
+		for i in range(len(c_pair)):
+			if raw[c_pair[i][0]][-1]==raw[c_pair[i][1]][-1]:
+				checklist.append(c_pair[i])
+			j+=1
 
-	checklist = sorted(checklist)
+	
 
-	i = 1
-	for real in checklist:
-		one = real[0]
-		two = real[1]
-		if one in cluster:
-			ids = cluster[one]
-			cluster[two] = ids
-			if two not in neighbors[ids]:
-				neighbors[ids].append(two)
-		else:
-			cluster[one] = i
-			cluster[two] = i
-			neighbors[i] = [one, two]
-			i+=1
+	neighbors = union_find(checklist, len(raw))
 	
 	n2 = 0
 	n3 = 0
 	n4 = 0
 	nn = 0
 	track = 0
+	#print "long"
 	for neighbor in neighbors:
-		track+=len(neighbors[neighbor])
-		if len(neighbors[neighbor])==2:
+		
+		if neighbors[neighbor]==1:
+			track+=1
+		elif neighbors[neighbor]==2:
 			n2+=1
-		elif len(neighbors[neighbor])==3:
+		elif neighbors[neighbor]==3:
 			n3+=1
 		else:
 			nn+=1
 			
 #	n4o = 1.0*n4/(1-((1-p)**3)*(p**3)*4-((1-p)**4)*(p**2)*15- ((1-p)**5)*(p)*6)
-	n1 = len(raw) - track
+	n1 = track-1
 	n3o = 1.0*n3/(1 - 3*(1-p)**2*p - (1-p)**3)
 	n2o = 1.0*(n2 - n3o*(3*(1-p)**2*p))/p
-	n1o = n1 - 2*n2o*(1-p) - 3*n3o*(1-p)**3 - n3o*p*(1-p)**2
+	n1o = n1 - 2*n2o*(1-p) - 3*n3o*(1-p)**3 - 3*n3o*p*(1-p)**2
 	return n1o+n3o+n2o+nn
 
 
 def calculate_pr(resultlist, testresultlist, labels, test_pair, c_pair, raw):
-	TP = 0
-	FP = 0
 	P = sum(labels)
+	c_pair_dic = {}
+	indx = 0
+	for elem in c_pair:
 
-	for i in range(len(testresultlist)):
-		if testresultlist[i]==1:
-			if labels[i]==1:
-				TP+=1
-			else:
-				FP+=1
+		c_pair_dic[elem] = indx
+		indx+=1
 
-	recall = TP*1.0/P
 	a=0
 	for i in range(len(labels)):
 		if labels[i]==1:
-			if test_pair[i] in c_pair:
-				if resultlist[c_pair.index(test_pair[i])]==1:
+			if test_pair[i] in c_pair_dic:
+				if resultlist[c_pair_dic[test_pair[i]]]==1:
 					a+=1
+	# print "hashing recall", a*1.0/P
 
 	if a==0:
 		return 'inf'
 	else:
 		return (a*1.0/P)
+
+
+
+def main():
+	parser = argparse.ArgumentParser(description='Process.')
+	parser.add_argument('input', help='file which has all candidate pairs')
+	parser.add_argument('output', help='output file')
+	parser.add_argument('goldstan', help='file which has raw data with all ground truth labels')
+	parser.add_argument('--trainsize', default='0.1', help='percentage of total pairs to use in training')
+	parser.add_argument('--iter', default='100', help='iterations')
+	parser.add_argument('--flag', default='1', help='If using full labels 1, if using SVM 0')
+	args = parser.parse_args()
+	#process input candidate pairs stage
+	candidates, Allpair, Total, raw, goldPairs, scores = preprocess(args.input, args.goldstan)
+
+	#SVM stage
+	with open(args.output, 'a+') as write:
+		writer = csv.writer(write, delimiter=' ')
+		for i in range(int(args.iter)):
+			estimate_random, estimate_hashing = estimate(candidates, Total, raw, goldPairs, args.trainsize, scores, args.flag)
+			writer.writerow([estimate_random, estimate_hashing])
+			print estimate_random, estimate_hashing
 
 
 if __name__ == "__main__":
