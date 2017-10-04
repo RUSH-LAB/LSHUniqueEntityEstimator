@@ -12,7 +12,7 @@ Download the dataset from [here](https://hpi.de/naumann/projects/data-quality-an
 Restaurant.csv is the data file containing all the records with the cluster id in the last column (same cluster id means same entity)
 Restaurant_gold.csv is the gold standard file containing all the ground truth pairs.
 
-Download the C++ Package from [here](http://rush.rice.edu/large-scale.html). This is a fast minhash package which will take dataset as input. It will output candidate pairs which fall in the same buckets. Details in [here] () 
+Use the C++ Package from [here](http://rush.rice.edu/large-scale.html) and also in C++ folder in this repository. This is a fast minhash package which will take dataset as input. It will output candidate pairs which fall in the same buckets. Details in [here] () 
 By following the instructions of minhash pacakge, for input Restaurant.csv, we can get output Restaurant_out.csv.
 
 ```
