@@ -15,9 +15,20 @@ Restaurant_gold.csv is the gold standard file containing all the ground truth pa
 Use the C++ Package from [here](http://rush.rice.edu/large-scale.html) and also in C++ folder in this repository. This is a fast minhash package which will take dataset as input. It will output candidate pairs which fall in the same buckets. Details in [here] () 
 By following the instructions of minhash pacakge, for input Restaurant.csv, we can get output Restaurant_out.csv.
 
+
+ATTN: This does not run and has errors.
 ```
 Python pipeline.py --input Restaurant_out.csv --goldstan Restaurant.csv --output any_custom_file_name
 ```
+
+```
+Python pipeline.py --input data/Cd_out.csv --goldstan data/Cd.csv --output a.csv
+```
+
+```
+Python pipeline.py --input rldata500.csv --goldstan identity.csv --output any_custom_file_name
+```
+
 There are other options:
 ```
 '--trainsize', default='0.1', help='percentage of total pairs to use in training'
