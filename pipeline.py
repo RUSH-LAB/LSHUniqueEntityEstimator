@@ -15,7 +15,7 @@ def preprocess(inputf, standard):
 	Allpair = {}
 	with open(standard, 'rb') as pairs:
 		pairs.readline()
-		reader = csv.reader(pairs, delimiter=',')
+		reader = csv.reader(pairs, delimiter=';')
 		i=1
 		for row in reader:
 			if row[-1] in Allpair:
