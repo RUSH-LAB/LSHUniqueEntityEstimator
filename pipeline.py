@@ -15,7 +15,7 @@ def preprocess(inputf, standard):
 	Allpair = {}
 	with open(standard, 'rb') as pairs:
 		pairs.readline()
-		reader = csv.reader(pairs, delimiter=';')
+		reader = csv.reader(pairs, delimiter=',')
 		i=1
 		for row in reader:
 			if row[-1] in Allpair:
@@ -245,9 +245,9 @@ def calculate_pr(resultlist, testresultlist, labels, test_pair, c_pair, raw):
 
 def main():
 	parser = argparse.ArgumentParser(description='Process.')
-	parser.add_argument('input', help='file which has all candidate pairs')
-	parser.add_argument('output', help='output file')
-	parser.add_argument('goldstan', help='file which has raw data with all ground truth labels')
+	parser.add_argument('--input', help='file which has all candidate pairs')
+	parser.add_argument('--output', help='output file')
+	parser.add_argument('--goldstan', help='file which has raw data with all ground truth labels')
 	parser.add_argument('--trainsize', default='0.1', help='percentage of total pairs to use in training')
 	parser.add_argument('--iter', default='100', help='iterations')
 	parser.add_argument('--flag', default='1', help='If using full labels 1, if using SVM 0')
