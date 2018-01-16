@@ -33,6 +33,7 @@ There are other options:
 ```
 '--trainsize', default='0.1', help='percentage of total pairs to use in training'
 '--iter', default='100', help='iterations you want to repeat the process'
+'--delimiter', default=' ', help='delimeter of input file'
 ```
 Then you will get an estimation of the number of unique records in Restaurant dataset.
 
