@@ -6,16 +6,17 @@ import pickle
 import ngram
 import datetime
 import unionfind
+import logging
 from sklearn import linear_model, ensemble, svm
 
 
-def preprocess(inputf, standard):
+def preprocess(inputf, standard, delimiter):
 	raw = {}
 	#read raw data
 	Allpair = {}
 	with open(standard, 'rb') as pairs:
 		pairs.readline()
-		reader = csv.reader(pairs, delimiter=';')
+		reader = csv.reader(pairs, delimiter=delimiter)
 		i=1
 		for row in reader:
 			if row[-1] in Allpair:
@@ -145,7 +146,7 @@ def estimate(candidates, Total, raw, goldPairs, trainsize, scores, flag):
 	Predict_pairs_hashing = sum(hashingselection)
 
 	random_recall = calculate_pr(randomselection,testresultlist, trainlabels+testlabels, train_pair+test_pair, random_pair, raw)
-	if random_recall == 'inf':
+	if random_recall == float('Inf'):
 		estimate_random = random_recall
 	else:
 		estimate_random = probability(randomselection, random_recall, random_pair, raw, int(flag))
@@ -237,7 +238,7 @@ def calculate_pr(resultlist, testresultlist, labels, test_pair, c_pair, raw):
 	# print "hashing recall", a*1.0/P
 
 	if a==0:
-		return 'inf'
+		return float('Inf')
 	else:
 		return (a*1.0/P)
 
@@ -248,20 +249,25 @@ def main():
 	parser.add_argument('--input', help='file which has all candidate pairs')
 	parser.add_argument('--output', help='output file')
 	parser.add_argument('--goldstan', help='file which has raw data with all ground truth labels')
+	parser.add_argument('--delimiter', default=' ', help='delimeter of input file')
 	parser.add_argument('--trainsize', default='0.1', help='percentage of total pairs to use in training')
 	parser.add_argument('--iter', default='100', help='iterations')
 	parser.add_argument('--flag', default='1', help='If using full labels 1, if using SVM 0')
 	args = parser.parse_args()
 	#process input candidate pairs stage
-	candidates, Allpair, Total, raw, goldPairs, scores = preprocess(args.input, args.goldstan)
+	logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+	logging.info('Start preprocessing data...')
+	candidates, Allpair, Total, raw, goldPairs, scores = preprocess(args.input, args.goldstan, args.delimiter)
+
 
 	#SVM stage
 	with open(args.output, 'a+') as write:
-		writer = csv.writer(write, delimiter=' ')
+		writer = csv.writer(write, delimiter=args.delimiter)
 		for i in range(int(args.iter)):
 			estimate_random, estimate_hashing = estimate(candidates, Total, raw, goldPairs, args.trainsize, scores, args.flag)
 			writer.writerow([estimate_random, estimate_hashing])
-			print estimate_random, estimate_hashing
+			logging.info('Iteration %d : PRSE is %f ; LSHE is %f', i, estimate_random, estimate_hashing)
+
 
 
 if __name__ == "__main__":
