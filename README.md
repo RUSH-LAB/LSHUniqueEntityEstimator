@@ -43,6 +43,12 @@ There are other options:
 *Noted in the delimiter option, the default delimiter for "--goldstan" file is ",", if your file uses different dilimiter, you need to set it here.
 
 Then you will get an estimation of the number of unique records in Restaurant dataset.
+Like:
+```
+2018-01-19 04:00:12,364 - INFO - Iteration 76 : PRSE is inf ; LSHE is 742.750000
+2018-01-19 04:00:13,203 - INFO - Iteration 77 : PRSE is inf ; LSHE is 755.110634
+```
+PRSE refers to the random sampling in [our paper](https://arxiv.org/pdf/1710.02690.pdf) and LSHE is the proposed estimator.
 
 # Preview of Results 
 We used three real-world dataset for testing: [Resaurant](), [CD]() and Voter Registration dataset.
