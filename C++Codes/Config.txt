@@ -6,18 +6,18 @@
 # Choose K and L Wisely, try with higher values of K and go down. Typically in range 1-5 for small pruning,
 #for rigorous pruning use larger values of K 
 
-K=4
+K=1
 
 # More L increases the recall but also reports more pair. Less sensitive than K
 
-L=38
+L=10
 
 # ngrams length
 
 shingles=3
 
 # Thresholds, only reports if found in at least this many buckets (cancels random noise). If you are missing pairs #decrease this
-Thresh=2
+Thresh=1
 
 
 #Give the input CSV file. First line will be ignored (assumed to be header). Every line will be treated as a #record. 

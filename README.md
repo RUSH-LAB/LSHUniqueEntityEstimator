@@ -16,15 +16,26 @@ Like:
 ```
 
 Use the C++ Package from [here](http://rush.rice.edu/large-scale.html) and also in C++ folder in this repository. This is a fast minhash package which will take dataset as input. It will output candidate pairs which fall in the same buckets. Details in [here] () 
-By following the instructions of minhash pacakge, for input Restaurant.csv, we can get output Restaurant_out.csv.
+By following the instructions in Readme of minhash pacakge, for input Restaurant.csv, we can get output Restaurant_out.csv. And then Restaurant_out.csv along with Restaurant.csv can be feed in to our estimation package to output unique entity estimation.
+Genereal steps would be:
 
-It will look like 
+1. Compile the minhash package:
+```
+cd C++Codes
+g++ -std=c++11 *.cpp -fopenmp
+```
+2. Update the Config file for minhash and run the program (Remember to change the outputfile name option to Restaurant_out.csv)
+```
+./a.out Config.txt
+```
+Then it will output Restaurant_out.csv which look like 
 ```
 Rec1 Rec2
 1 2
 2 3
 ...
 ```
+3. Feed in Restaurant_out.csv and Restaurant.csv to our estimation program:
 
 ```
 Python pipeline.py --input data/Restaurant_out.csv --goldstan data/Restaurant.csv --output any_custom_file_name
