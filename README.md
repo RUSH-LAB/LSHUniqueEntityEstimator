@@ -22,7 +22,9 @@ Genereal steps would be:
 1. Compile the minhash package:
 ```
 cd C++Codes
-g++ -std=c++11 *.cpp -fopenmp
+g++ -std=c++11 *.cpp -fopenmp (on Windows and Linux)
+g++-7 *.cpp -fopenmp (on MacOS)
+ATTN: Currently, the code is sometimes not compiling. This needs to be fixed. Also, the version on Anshu's webpage has errors in it and it outdated. Let's fix this ASAP. 
 ```
 2. Update the Config file for minhash and run the program (Remember to change the outputfile name option to Restaurant_out.csv)
 ```
