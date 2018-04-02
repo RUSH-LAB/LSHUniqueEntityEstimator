@@ -1,65 +1,68 @@
-# LSH Unique Entity Estinamtor
+# Unique Entity Estinamtor
 A package for Estimating the number of unique eneties for a given input dataset with duplicates and near duplicates. See [our paper](https://arxiv.org/pdf/1709.01190.pdf) for theoretical and benchmarking details. 
 
 ## Prerequisites
 Python 2, ngram, sklearn, numpy, scipy
 
-## Tutorial
+## Tutorial on running Unique Entity Estimation Package
 
-We will present very detailed steps to replicate one result presented in [our paper](https://arxiv.org/pdf/1710.02690.pdf), in particular the restaurant dataset (Becasue it is a public dataset). Other results can be replicated in a very similar manner.
+We will present very detailed steps to replicate one result presented in [our paper](https://arxiv.org/pdf/1710.02690.pdf), in particular the restaurant dataset (public dataset). Other results can be replicated in a very similar manner.
 
 Download the dataset from [here](https://hpi.de/naumann/projects/data-quality-and-cleansing/dude-duplicate-detection.html#c114715)
 Restaurant.csv is the data file containing all the records with the cluster id in the last column (same cluster id means same entity)
-Like:
+
+Example:
 ```
 "arnie morton's of chicago","435 s. la cienega blv.","los angeles","american",'0'
 ```
 
-Use the C++ Package from [here](http://rush.rice.edu/large-scale.html) and also in C++ folder in this repository. This is a fast minhash package which will take dataset as input. It will output candidate pairs which fall in the same buckets. Details in [here] () 
-By following the instructions in Readme of minhash pacakge, for input Restaurant.csv, we can get output Restaurant_out.csv. And then Restaurant_out.csv along with Restaurant.csv can be feed in to our estimation package to output unique entity estimation.
-Genereal steps would be:
+Use the C++ Package folder in this repository. This is a fast minhash package which will take the dataset as input. It will output candidate pairs which fall in the same buckets. 
+
+
+By following the instructions in README of minhash pacakge, for input Restaurant.csv, we can get output Restaurant_out.csv. And then Restaurant_out.csv along with Restaurant.csv can be feed in to our estimation package to output unique entity estimation.
+
+We outline these general steps below:
 
 1. Compile the minhash package:
 ```
 cd C++Codes
-g++ -std=c++11 *.cpp -fopenmp
+g++ -std=c++11 *.cpp -fopenmp (on Windows and Linux)
+g++-7 *.cpp -fopenmp (on MacOS) 
 ```
-2. Update the Config file for minhash and run the program (Remember to change the outputfile name option to Restaurant_out.csv)
+
+2. Update the Config file for minhash and run the program (Remember to change the outputfile name option to Restaurant_out.csv or the particular name of your data set.)
 ```
 ./a.out Config.txt
 ```
-Then it will output Restaurant_out.csv which look like 
-```
+Then it will output Restaurant_out.csv where the output will look like the following```
 Rec1 Rec2
 1 2
 2 3
 ...
 ```
-3. Feed in Restaurant_out.csv and Restaurant.csv to our estimation program:
+
+3. Feed in Restaurant_out.csv and Restaurant.csv to our unique entity estimation program:
 
 ```
 Python pipeline.py --input data/Restaurant_out.csv --goldstan data/Restaurant.csv --output any_custom_file_name
 ```
 
-```
-Python pipeline.py --input data/Cd_out.csv --goldstan data/Cd.csv --output any_custom_file_name
-```
 
-There are other options:
+Other options that one can change include the following:
 ```
 '--trainsize', default='0.1', help='percentage of total pairs to use in training'
 '--iter', default='100', help='iterations you want to repeat the process'
 '--delimiter', default=',', help='delimeter of input file'
 ```
-*Noted in the delimiter option, the default delimiter for "--goldstan" file is ",", if your file uses different dilimiter, you need to set it here.
+*Noted in the delimiter option, the default delimiter for "--goldstan" file is ",", if your file uses different delimiter, which needs to be set here.
 
-Then you will get an estimation of the number of unique records in Restaurant dataset.
-Like:
+The output of this will be the estimation of the number of unique records in the data set (Restaurant.csv in this example). The output should look like the case below: 
+
+
+Example output: 
 ```
 2018-01-19 04:00:12,364 - INFO - Iteration 76 : PRSE is inf ; LSHE is 742.750000
 2018-01-19 04:00:13,203 - INFO - Iteration 77 : PRSE is inf ; LSHE is 755.110634
 ```
-PRSE refers to the random sampling in [our paper](https://arxiv.org/pdf/1710.02690.pdf) and LSHE is the proposed estimator.
 
-# Preview of Results 
-We used three real-world dataset for testing: [Resaurant](), [CD]() and Voter Registration dataset.
+The PRSE refers to the random sampling in [our paper](https://arxiv.org/pdf/1710.02690.pdf) and LSHE is the proposed estimator.
