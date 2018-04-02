@@ -184,17 +184,6 @@ auto begin = chrono::high_resolution_clock::now();
 void RecordLinkage(int argc,char *arg[])
 { 
 
-	//outputFile = "C:/Users/iitkg/Google Drive/RecordLinkage/sampleout";
-
-	//int K = 2;// atoi(arg[2]);
-	//int L = 100;// atoi(arg[3]);
-
-	//
-	//if (argc< 5)
-	//	chunk = 50000;
-	//else
-	//	chunk = atoi(arg[4]);
-
 	//parseconfig("C:/RecordLinkage/DataAndFiles/C++/Config.txt");
 	cout << arg[1] << endl;
 	parseconfig(arg[1]);
@@ -222,33 +211,6 @@ void RecordLinkage(int argc,char *arg[])
        cout<<"Error inputcsvfile not found: Given Filename "<< inputCSVname << endl;
     }  
 
-	//Debugging	
-	// string kk = "/Users/Beidi/Documents/fa2016/research/linkage/RecordLinkagePackage/C++Codes/rldata500p.csv";
-	// if (trim(kk).compare(inputCSVname)!=0){
-	// 		cout<<trim(kk)<<endl;
-	// 		cout.flush();
-	// 		cout<<inputCSVname<<endl;
-	// 		cout.flush();
-	// 		int i = 0;
-	// 		kk = trim(kk);
-	// 		for( i =0; i <kk.size();i++){
-	// 			if(kk[i]!=inputCSVname[i]){
-	// 				cout<<"**"<<(int)kk[i]<<"**"<<endl;
-	// 			}
-	// 		}
-	// 		cout<<i<<endl;
-	// 		cout<<(int)inputCSVname[i]<<endl;
-	// 		cout<<(int)'\r'<<endl;
-	// 		cout<< trim(kk).size() << " "<<inputCSVname.size()<<endl;
-	// 	    cout<<trim(kk).compare(inputCSVname)<< endl;
-
-	// }
-	// std::ifstream file4(trim(kk));
-	//         if(file4.is_open())
-	//         {
-	//            cout<<"inputcsvfile can be open "<< kk << endl;
-	//         }  
-      
       
 	std::string str;
 	getline(file, str); //remove header
@@ -317,7 +279,6 @@ void RecordLinkage(int argc,char *arg[])
 
 int main(int argc, char* argv[])
 {
-	//cout << RAND_MAX << endl;
 	std::time_t start, end;
 	long delta = 0;
 	start = std::time(NULL);
@@ -328,24 +289,5 @@ int main(int argc, char* argv[])
 	end = std::time(NULL);
 	delta = end - start;
 	cout << "Takes Time: " << delta << " seconds." << endl;
-	//RecordLinkage(argc, argv);
-	/*
-	string first = "Anshumali Shrivastava";
-	string three = "Rand Shrivastava";
-	string two = "Rand Shrivastava";
 
-	HashFunction *minhasher = new DensifiedMinHash(10, 16);
-	cout << minhasher->getHash(first, 3)[3] << " " << minhasher->getHash(first, 3)[1] << endl;
-	cout << minhasher->getHash(two, 3)[3] << " " << minhasher->getHash(two, 3)[1] << endl;
-
-
-	LSH *_Algo = new LSH(5, 2);
-	_Algo->add(minhasher->getHash(first, 3), 1);
-	_Algo->add(minhasher->getHash(two, 3), 2);
-	_Algo->add(minhasher->getHash(three, 3), 3);
-
-	int *ret = _Algo->retrieve(minhasher->getHash(two, 3));
-	cout << ret[0] << " " << ret[1] << " " << ret[2];*/
-
-	//cin.get();
 }
