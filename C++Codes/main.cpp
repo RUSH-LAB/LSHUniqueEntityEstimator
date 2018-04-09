@@ -214,13 +214,13 @@ void RecordLinkage(int argc,char *arg[])
       
 	std::string str;
 	getline(file, str); //remove header
-	cout << str << endl;
+	// cout << str << endl;
 	int linenum = 0;
 	int offset = 0;
 	while (getline(file, str))
 	{
 		records[linenum] = str;
-		cout << str << endl;
+		// cout << str << endl;
 		linenum++;
 		if (linenum %chunk == 0)
 		{

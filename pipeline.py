@@ -251,8 +251,8 @@ def main():
 	parser.add_argument('--goldstan', help='file which has raw data with all ground truth labels')
 	parser.add_argument('--delimiter', default=',', help='delimeter of input file')
 	parser.add_argument('--trainsize', default='0.1', help='percentage of total pairs to use in training')
-	parser.add_argument('--iter', default='100', help='iterations')
 	parser.add_argument('--flag', default='1', help='If using full labels 1, if using SVM 0')
+	parser.add_argument('--id',default='1', help='identifier for input settings')
 	args = parser.parse_args()
 	#process input candidate pairs stage
 	logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -263,10 +263,10 @@ def main():
 	#SVM stage
 	with open(args.output, 'a+') as write:
 		writer = csv.writer(write, delimiter=args.delimiter)
-		for i in range(int(args.iter)):
-			estimate_random, estimate_hashing = estimate(candidates, Total, raw, goldPairs, args.trainsize, scores, args.flag)
-			writer.writerow([estimate_random, estimate_hashing])
-			logging.info('Iteration %d : PRSE is %f ; LSHE is %f', i, estimate_random, estimate_hashing)
+		estimate_random, estimate_hashing = estimate(candidates, Total, raw, goldPairs, args.trainsize, scores, args.flag)
+		RR = len(candidates)/(len(raw)*(len(raw)-1)/2.0)*100
+		writer.writerow([args.id, RR, estimate_random, estimate_hashing])
+		logging.info('Reduction Ratio is %f Percent; PRSE is %f ; LSHE is %f', RR, estimate_random, estimate_hashing)
 
 
 

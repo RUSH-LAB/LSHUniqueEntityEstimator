@@ -8,7 +8,7 @@ To run the package (command line linux)
 
 g++ -std=c++11 *.cpp output -fopenmp
 
-for ((i=1;i<=100;i++)) ; do ./output config.txt; python pipeline.py --input Syria_output.csv --goldstan Syria.csv --pair train.csv >>raw_results.csv; done
+for ((i=1;i<=1;i++)) ; do ./output config.txt; python pipeline.py --input Syria_output.csv --goldstan Syria.csv --pair train.csv >>raw_results.csv; done
 
 Input file Syria.csv format example:
 
@@ -31,3 +31,5 @@ raw_results.csv will have 100 estimation of unqiue number of records in input da
 '--pair',  help='partial labels for the input dataset, eg. the handmatching matches/nonmatches'
 ```
 
+
+for ((i=1;i<=1;i++)) ; do ./output config.txt; python pipeline.py --input Syria_output.csv --goldstan Syria.csv --pair train.csv >>raw_results.csv; done

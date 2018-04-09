@@ -56,13 +56,15 @@ Other options that one can change include the following:
 ```
 *Noted in the delimiter option, the default delimiter for "--goldstan" file is ",", if your file uses different delimiter, which needs to be set here.
 
-The output of this will be the estimation of the number of unique records in the data set (Restaurant.csv in this example). The output should look like the case below: 
+The output of this will be the ratio of samples produces from step 2, estimation of the number of unique records in the data set (Restaurant.csv in this example). The output should look like the case below: 
 
 
 Example output: 
+ID RR PRSE LSHE
 ```
-2018-01-19 04:00:12,364 - INFO - Iteration 76 : PRSE is inf ; LSHE is 742.750000
-2018-01-19 04:00:13,203 - INFO - Iteration 77 : PRSE is inf ; LSHE is 755.110634
+1 0.1 880 742.750000
 ```
 
-The PRSE refers to the random sampling in [our paper](https://arxiv.org/pdf/1710.02690.pdf) and LSHE is the proposed estimator.
+The PRSE refers to the random sampling in [our paper](https://arxiv.org/pdf/1710.02690.pdf) and LSHE is the proposed estimator. RR is the reduction ratio of the number of sampled pairs used in the estimation out of total possible pairs.
+
+An example script: run_script.sh will produce the estimation comparison plot of the in the paper. Note here "--id" option needs to change when the parameters setting for Config.txt changes to produce the plot in the paper.
