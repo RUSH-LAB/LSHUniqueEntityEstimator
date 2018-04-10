@@ -16,9 +16,12 @@ def preprocess(inputf, standard, delimiter):
 	Allpair = {}
 	with open(standard, 'rb') as pairs:
 		pairs.readline()
-		reader = csv.reader(pairs, delimiter=delimiter)
+		reader = pairs.read()
+		lineSplit = reader.split('\n')
 		i=1
-		for row in reader:
+		for row in lineSplit:
+			row = row.split(delimiter)
+
 			if row[-1] in Allpair:
 				Allpair[row[-1]].append(i)
 			else:
@@ -26,7 +29,6 @@ def preprocess(inputf, standard, delimiter):
 			raw[i] = row
 			i+=1
 	Total = len(raw)
-
 	#save all real pairs
 	goldPairs = []
 	for cluster in Allpair:
@@ -35,7 +37,6 @@ def preprocess(inputf, standard, delimiter):
 			for i in range(len(values)):
 				for j in range(i+1, len(values)):
 					goldPairs.append((values[i], values[j]))
-
 	#read candidate pairs
 	candidates = []
 	scores = []
@@ -110,7 +111,7 @@ def estimate(candidates, Total, raw, goldPairs, trainsize, scores, flag):
 	testlist = poslist[posnum/2:]+neglist[negnum/2:]
 	testlabels = poslabels[posnum/2:]+neglabels[negnum/2:]
 	test_pair = pospair[posnum/2:]+negpair[negnum/2:]
-
+	logging.info('Finish generating training for svm')
 
 	for i in range(len(candidates)):
 		datapoint = scores[i]
@@ -145,12 +146,14 @@ def estimate(candidates, Total, raw, goldPairs, trainsize, scores, flag):
 	hashingselection = svmt.predict(hashinglist)
 	Predict_pairs_hashing = sum(hashingselection)
 
+	logging.info('Start computing PRSE')
+
 	random_recall = calculate_pr(randomselection,testresultlist, trainlabels+testlabels, train_pair+test_pair, random_pair, raw)
 	if random_recall == float('Inf'):
 		estimate_random = random_recall
 	else:
 		estimate_random = probability(randomselection, random_recall, random_pair, raw, int(flag))
-
+	logging.info('Start computing LSHE')
 	hashing_recall = calculate_pr( hashingselection, testresultlist,trainlabels+testlabels, train_pair+test_pair, hashing_pair, raw)
 	estimate_hashing = probability(hashingselection, hashing_recall, hashing_pair, raw, int(flag))
 
@@ -258,16 +261,15 @@ def main():
 	logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 	logging.info('Start preprocessing data...')
 	candidates, Allpair, Total, raw, goldPairs, scores = preprocess(args.input, args.goldstan, args.delimiter)
+	logging.info('Done preprocessing')
 
 
-	#SVM stage
 	with open(args.output, 'a+') as write:
-		writer = csv.writer(write, delimiter=args.delimiter)
+		writer = csv.writer(write, delimiter=' ')
 		estimate_random, estimate_hashing = estimate(candidates, Total, raw, goldPairs, args.trainsize, scores, args.flag)
 		RR = len(candidates)/(len(raw)*(len(raw)-1)/2.0)*100
 		writer.writerow([args.id, RR, estimate_random, estimate_hashing])
 		logging.info('Reduction Ratio is %f Percent; PRSE is %f ; LSHE is %f', RR, estimate_random, estimate_hashing)
-
 
 
 if __name__ == "__main__":
