@@ -185,9 +185,13 @@ void RecordLinkage(int argc,char *arg[])
 { 
 
 	//parseconfig("C:/RecordLinkage/DataAndFiles/C++/Config.txt");
-	cout << arg[1] << endl;
+	cout <<"Config file is "<< arg[1] << endl;
 	parseconfig(arg[1]);
 	
+	cout<<"K = "<<arg[2]<<endl;
+	cout<<"L = "<<arg[3]<<endl;
+	K = atoi(arg[2]);
+	L = atoi(arg[3]);
 	//inputCSVname = "/Users/Beidi/Documents/fa2016/research/linkage/RecordLinkagePackage/C++Codes/rldata500p.csv";
 
 	LSH *_Algo = new LSH(K, L);
@@ -291,3 +295,4 @@ int main(int argc, char* argv[])
 	cout << "Takes Time: " << delta << " seconds." << endl;
 
 }
+

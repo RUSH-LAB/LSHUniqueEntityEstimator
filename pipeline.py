@@ -54,7 +54,7 @@ def preprocess(inputf, standard, delimiter):
 def estimate(candidates, Total, raw, goldPairs, trainsize, scores, flag):
 	#split train and test
 	posnum = int(float(trainsize)*len(goldPairs))
-	negnum = posnum
+	negnum = posnum*10
 
 	poslist = []
 	poslabels = []
@@ -119,45 +119,45 @@ def estimate(candidates, Total, raw, goldPairs, trainsize, scores, flag):
 		hashinglabels.append(datapoint[0])
 		hashing_pair.append(candidates[i])
 
-	for i in range(len(candidates)):
-		a = random.randint(1, len(raw)-1)
-		b = random.randint(1, len(raw)-1)
-		if (a==b):
-			b = random.randint(1, len(raw)-1)
-		amax = max(a, b)
-		bmin = min(a, b)
-		datapoint = cal_score(bmin, amax, raw, len(raw[1])-1)
-		randomresultlist.append(datapoint[1:])
-		randomresultlabels.append(datapoint[0])
-		random_pair.append((bmin, amax))
+#	for i in range(len(candidates)):
+#		a = random.randint(1, len(raw)-1)
+#		b = random.randint(1, len(raw)-1)
+#		if (a==b):
+#			b = random.randint(1, len(raw)-1)
+#		amax = max(a, b)
+#		bmin = min(a, b)
+#		datapoint = cal_score(bmin, amax, raw, len(raw[1])-1)
+#		randomresultlist.append(datapoint[1:])
+#		randomresultlabels.append(datapoint[0])
+#		random_pair.append((bmin, amax))
 
 	#train svm
-	svmt = svm.SVC(C=100)
+	svmt = svm.SVC(C=1)
 	svmt.fit(trainlist, trainlabels)
-
+	print len(trainlist)
 	#test on testing data
 	testresultlist = svmt.predict(trainlist+testlist)
 
 	#test on random selection
-	randomselection = svmt.predict(randomresultlist)
-	Predict_pairs_random = sum(randomselection)
+#	randomselection = svmt.predict(randomresultlist)
+#	Predict_pairs_random = sum(randomselection)
 
 	#test on hashing selection
 	hashingselection = svmt.predict(hashinglist)
 	Predict_pairs_hashing = sum(hashingselection)
 
-	logging.info('Start computing PRSE')
+#	logging.info('Start computing PRSE')
 
-	random_recall = calculate_pr(randomselection,testresultlist, trainlabels+testlabels, train_pair+test_pair, random_pair, raw)
-	if random_recall == float('Inf'):
-		estimate_random = random_recall
-	else:
-		estimate_random = probability(randomselection, random_recall, random_pair, raw, int(flag))
+#	random_recall = calculate_pr(randomselection,testresultlist, trainlabels+testlabels, train_pair+test_pair, random_pair, raw)
+#	if random_recall == float('Inf'):
+#		estimate_random = random_recall
+#	else:
+#		estimate_random = probability(randomselection, random_recall, random_pair, raw, int(flag))
 	logging.info('Start computing LSHE')
 	hashing_recall = calculate_pr( hashingselection, testresultlist,trainlabels+testlabels, train_pair+test_pair, hashing_pair, raw)
 	estimate_hashing = probability(hashingselection, hashing_recall, hashing_pair, raw, int(flag))
 
-	return estimate_random, estimate_hashing
+	return estimate_hashing
 
 
 def cal_score(i, j, raw, length):
@@ -266,10 +266,10 @@ def main():
 
 	with open(args.output, 'a+') as write:
 		writer = csv.writer(write, delimiter=' ')
-		estimate_random, estimate_hashing = estimate(candidates, Total, raw, goldPairs, args.trainsize, scores, args.flag)
+		estimate_hashing = estimate(candidates, Total, raw, goldPairs, args.trainsize, scores, args.flag)
 		RR = len(candidates)/(len(raw)*(len(raw)-1)/2.0)*100
-		writer.writerow([args.id, RR, estimate_random, estimate_hashing])
-		logging.info('Reduction Ratio is %f Percent; PRSE is %f ; LSHE is %f', RR, estimate_random, estimate_hashing)
+		writer.writerow([args.id, RR, estimate_hashing])
+		logging.info('Reduction Ratio is %f Percent;  LSHE is %f', RR, estimate_hashing)
 
 
 if __name__ == "__main__":

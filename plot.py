@@ -1,7 +1,7 @@
 import csv
 import argparse
 import numpy as np
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 
 def main():
 	parser = argparse.ArgumentParser(description='Process.')
@@ -12,7 +12,7 @@ def main():
 
 
 def plot(inputfile, gt):
-	data = np.genfromtxt(inputfile, delimiter=',')
+	data = np.genfromtxt(inputfile, delimiter=' ')
 
 	color = ['b', 'g', 'r', 'm', 'y', 'k', 'c', 'b', 'g', 'r']
 	dic = set(data[:, 0])
@@ -28,20 +28,21 @@ def plot(inputfile, gt):
 		iters1 = data[data[:, 0]==cur,:]
 
 		rr = iters1[:, 1]
-		a = iters1[:, 2]
-		b = iters1[:, 3]
+		#a = iters1[:, 2]
+		b = iters1[:, 2]
 
 		x.append(np.average(rr))
-		y1.append(abs(np.ma.masked_invalid(a).mean()-gt)/gt)
-		y2.append(abs(np.average(b)-gt)/gt)
+		#y1.append(abs(np.ma.masked_invalid(a).mean()-gt)/gt)
+		y2.append(np.average([abs(elem-gt)/gt for elem in b]))
 	
 	d = list(np.argsort(x))
 	x = np.array(x)[d]
-	y1 = np.array(y1)[d]
+	#y1 = np.array(y1)[d]
 	y2 = np.array(y2)[d]
-
-	plt.scatter(x, y1, linestyle=":", label='PRSE')
-	# plt.plot(x, y2, linestyle="-", label='LSHE')
+	print x
+	print y2
+	#plt.scatter(x, y1, linestyle=":", label='PRSE')
+	plt.plot(x, y2, linestyle="-", label='LSHE')
 
 	legend = plt.legend(loc='upper right', shadow=True)
 	plt.ylabel('RE')
