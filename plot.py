@@ -1,7 +1,7 @@
 import csv
 import argparse
 import numpy as np
-#import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 
 def main():
 	parser = argparse.ArgumentParser(description='Process.')
