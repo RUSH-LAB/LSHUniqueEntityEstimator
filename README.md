@@ -2,7 +2,7 @@
 A package for Estimating the number of unique eneties for a given input dataset with duplicates and near duplicates. See [our paper](https://arxiv.org/pdf/1709.01190.pdf) for theoretical and benchmarking details. 
 
 ## Prerequisites
-Python 2, ngram, sklearn, numpy, scipy, 
+Python 2, ngram, sklearn, numpy, scipy, matlib
 
 In order to install using pip, one will need to run the following commands if errors arise from the terminal due to recent changes with SSH in pip (Linus and MacOS)
 
