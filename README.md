@@ -34,24 +34,25 @@ We outline these general steps below:
 ```
 cd C++Codes
 g++ -std=c++11 *.cpp -fopenmp (on Windows and Linux)
-g++-7 *.cpp -fopenmp (on MacOS) 
+g++ *.cpp -fopenmp (on MacOS) 
 ```
+NOTE: For mac users, the g++ version needs to be 5 or higher.
 
-2. Update the Config file for minhash and run the program (Remember to change the outputfile name option to Restaurant_out.csv or the particular name of your data set.)
+2. Update the Config file for minhash and run the program (Remember to change the outputfile name option to Restaurant_pair.csv or the particular name of your data set.) The second and third arguments are K and L respectively.
 ```
-./a.out Config.txt
+./a.out Config.txt 1 10
 ```
-Then it will output Restaurant_out.csv where the output will look like the following```
+Then it will output Restaurant_pair.csv where the output will look like the following```
 Rec1 Rec2
 1 2
 2 3
 ...
 ```
 
-3. Feed in Restaurant_out.csv and Restaurant.csv to our unique entity estimation program:
+3. Feed in Restaurant_pair.csv and Restaurant.csv to our unique entity estimation program:
 
 ```
-Python pipeline.py --input data/Restaurant_out.csv --goldstan data/Restaurant.csv --output any_custom_file_name
+Python pipeline.py --input Restaurant_pair.csv --goldstan data/Restaurant.csv --output any_custom_file_name
 ```
 
 
@@ -67,11 +68,11 @@ The output of this will be the ratio of samples produces from step 2, estimation
 
 
 Example output: 
-ID RR PRSE LSHE
+ID RR LSHE
 ```
-1 0.1 880 742.750000
+1 0.1 742.750000
 ```
 
-The PRSE refers to the random sampling in [our paper](https://arxiv.org/pdf/1710.02690.pdf) and LSHE is the proposed estimator. RR is the reduction ratio of the number of sampled pairs used in the estimation out of total possible pairs.
+LSHE is the proposed estimator. RR is the reduction ratio of the number of sampled pairs used in the estimation out of total possible pairs.
 
 An example script: run_script.sh will produce the estimation comparison plot of the in the paper. Note here "--id" option needs to change when the parameters setting for Config.txt changes to produce the plot in the paper.
