@@ -42,7 +42,7 @@ def plot(inputfile, gt):
 	print x
 	print y2
 	#plt.scatter(x, y1, linestyle=":", label='PRSE')
-	plt.plot(x, y2, linestyle="-", label='LSHE')
+	plt.semilogy(x, y2, linestyle="-", label='LSHE')
 
 	legend = plt.legend(loc='upper right', shadow=True)
 	plt.ylabel('RE')

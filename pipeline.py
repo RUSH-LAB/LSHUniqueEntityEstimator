@@ -51,7 +51,7 @@ def preprocess(inputf, standard, delimiter):
 	return  candidates, Allpair, Total, raw, goldPairs, scores
 
 
-def estimate(candidates, Total, raw, goldPairs, trainsize, scores, flag):
+def estimate(candidates, Total, raw, goldPairs, trainsize, scores, flag, c):
 	#split train and test
 	posnum = int(float(trainsize)*len(goldPairs))
 	negnum = posnum*10
@@ -132,7 +132,7 @@ def estimate(candidates, Total, raw, goldPairs, trainsize, scores, flag):
 #		random_pair.append((bmin, amax))
 
 	#train svm
-	svmt = svm.SVC(C=1)
+	svmt = svm.SVC(C=c)
 	svmt.fit(trainlist, trainlabels)
 	print len(trainlist)
 	#test on testing data
@@ -256,6 +256,7 @@ def main():
 	parser.add_argument('--trainsize', default='0.1', help='percentage of total pairs to use in training')
 	parser.add_argument('--flag', default='1', help='If using full labels 1, if using SVM 0')
 	parser.add_argument('--id',default='1', help='identifier for input settings')
+	parser.add_argument('--c',default='1', help='SVM hyper paramter')
 	args = parser.parse_args()
 	#process input candidate pairs stage
 	logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -266,7 +267,7 @@ def main():
 
 	with open(args.output, 'a+') as write:
 		writer = csv.writer(write, delimiter=' ')
-		estimate_hashing = estimate(candidates, Total, raw, goldPairs, args.trainsize, scores, args.flag)
+		estimate_hashing = estimate(candidates, Total, raw, goldPairs, args.trainsize, scores, args.flag, float(args.c))
 		RR = len(candidates)/(len(raw)*(len(raw)-1)/2.0)*100
 		writer.writerow([args.id, RR, estimate_hashing])
 		logging.info('Reduction Ratio is %f Percent;  LSHE is %f', RR, estimate_hashing)
