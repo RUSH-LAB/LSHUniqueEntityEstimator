@@ -42,7 +42,8 @@ NOTE: For mac users, the g++ version needs to be 5 or higher.
 ```
 ./a.out Config.txt 1 10
 ```
-Then it will output Restaurant_pair.csv where the output will look like the following```
+Then it will output Restaurant_pair.csv where the output will look like the following
+```
 Rec1 Rec2
 1 2
 2 3
