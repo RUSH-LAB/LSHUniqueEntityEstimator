@@ -22,7 +22,7 @@ python plot.py --input test --gt 9508
 #For Voter
 # for ((i=25;i<=40;i+=5)) ; 
 # 	do for ((j=1;j<=10; j++));
-#  		do ./output config_voter.txt 4 $i; python pipeline.py --flag 0 --id $i --trainsize 0.1 --input Voter_pair.csv --goldstan replicate/voter.csv --delimiter ',' --c 0.0001 --output test ; 
+#  		do ./output config_voter.txt 4 $i; python pipeline.py --flag 0 --id $i --trainsize 0.1 --input Voter_pair.csv --goldstan replicate/voter_processed.csv --delimiter ',' --c 0.0001 --output test ; 
 # 	done
 # done
 
