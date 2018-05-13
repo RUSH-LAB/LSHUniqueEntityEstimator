@@ -33,7 +33,7 @@ def plot(inputfile, gt):
 
 		x.append(np.average(rr))
 		#y1.append(abs(np.ma.masked_invalid(a).mean()-gt)/gt)
-		y2.append(np.average([abs(elem-gt)/gt for elem in b]))
+		y2.append(np.average([abs(1.0*elem-gt)/gt for elem in b if elem!='Inf']))
 	
 	d = list(np.argsort(x))
 	x = np.array(x)[d]
@@ -46,7 +46,7 @@ def plot(inputfile, gt):
 
 	legend = plt.legend(loc='upper right', shadow=True)
 	plt.ylabel('RE')
-	plt.xlabel('Samples')
+	plt.xlabel('Samples (%)')
 	plt.show()
 
 

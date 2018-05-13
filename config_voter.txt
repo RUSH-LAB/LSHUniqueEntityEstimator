@@ -6,11 +6,11 @@
 # Choose K and L Wisely, try with higher values of K and go down. Typically in range 1-5 for small pruning,
 #for rigorous pruning use larger values of K 
 
-K=1
+K=2
 
 # More L increases the recall but also reports more pair. Less sensitive than K
 
-L=4
+L=20
 
 # ngrams length
 

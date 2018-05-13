@@ -54,7 +54,7 @@ def preprocess(inputf, standard, delimiter):
 def estimate(candidates, Total, raw, goldPairs, trainsize, scores, flag, c):
 	#split train and test
 	posnum = int(float(trainsize)*len(goldPairs))
-	negnum = posnum*10
+	negnum = posnum*1
 
 	poslist = []
 	poslabels = []
@@ -154,7 +154,11 @@ def estimate(candidates, Total, raw, goldPairs, trainsize, scores, flag, c):
 #	else:
 #		estimate_random = probability(randomselection, random_recall, random_pair, raw, int(flag))
 	logging.info('Start computing LSHE')
-	hashing_recall = calculate_pr( hashingselection, testresultlist,trainlabels+testlabels, train_pair+test_pair, hashing_pair, raw)
+	if hashing_recall == float('Inf'):
+		estimate_hashing = float('Inf')
+	else:
+		hashing_recall = calculate_pr( hashingselection, testresultlist,trainlabels+testlabels, train_pair+test_pair, hashing_pair, raw)
+
 	estimate_hashing = probability(hashingselection, hashing_recall, hashing_pair, raw, int(flag))
 
 	return estimate_hashing
@@ -182,7 +186,6 @@ def probability(result, p, c_pair, raw, flag):
 	neighbors = {}
 	checklist = []
 	j = 0
-
 	if flag:
 		for i in range(len(c_pair)):
 			if result[i]==1:
@@ -195,7 +198,7 @@ def probability(result, p, c_pair, raw, flag):
 			j+=1
 
 	
-
+	print "candidtate list: "+ str(len(checklist))
 	neighbors = union_find(checklist, len(raw))
 	
 	n2 = 0
@@ -238,7 +241,7 @@ def calculate_pr(resultlist, testresultlist, labels, test_pair, c_pair, raw):
 			if test_pair[i] in c_pair_dic:
 				if resultlist[c_pair_dic[test_pair[i]]]==1:
 					a+=1
-	# print "hashing recall", a*1.0/P
+	print "hashing recall", a*1.0/P, a
 
 	if a==0:
 		return float('Inf')

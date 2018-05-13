@@ -1,5 +1,9 @@
 #self defined
 replicate/voter*
+test
+output
+*_pair.csv
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
