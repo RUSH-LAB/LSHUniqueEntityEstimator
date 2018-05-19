@@ -15,6 +15,17 @@ pip2 install numpy scipy matplotlib
 
 We present detailed steps to replicate the LSHE for the Restaurant data set presented in [Chen, Shrivastava, Steorts (2018), To Appear, AoAS](https://arxiv.org/abs/1710.02690). In addition, we provide a bash script that replicates the LSHE method for all data sets. 
 
+- The data sets from the paper that are publicly available can be found in data/ (References from the data sets can be found in our paper). 
+
+1. Restaurant.csv contains the duplicated entities from the Restaurant data set and 
+Restaurant_pair.csv contains the corresponding matching pairs of records. 
+2. Cd.csv contains the duplicated entities from the CD data set and 
+cd_gold.csv contains the corresponding matching pairs of records.
+
+- The configuration files to run the package for our paper can be found in config/ 
+
+
+
 
 Download the dataset from [here](https://hpi.de/naumann/projects/data-quality-and-cleansing/dude-duplicate-detection.html#c114715)
 Restaurant.csv is the data file containing all the records with the cluster id in the last column (same cluster id means same entity)
