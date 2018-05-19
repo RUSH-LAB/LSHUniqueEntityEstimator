@@ -1,5 +1,5 @@
 # Unique Entity Estinamtor
-A package for Estimating the number of unique eneties for a given input dataset with duplicates and near duplicates. See [our paper](https://arxiv.org/abs/1710.02690) for theoretical and benchmarking details. 
+A package for Estimating the number of unique eneties for a given input dataset with duplicates and near duplicates. See [Chen, Shrivastava, Steorts (2018), To Appear, AoAS](https://arxiv.org/abs/1710.02690) for theoretical and benchmarking details. 
 
 ## Prerequisites
 Python 2, ngram, sklearn, numpy, scipy, matlib
