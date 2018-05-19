@@ -4,16 +4,17 @@ A package for unique entity estimation for a given entity resolution task. See [
 ## Prerequisites
 Python 2, ngram, sklearn, numpy, scipy, matlib
 
-In order to install using pip, one will need to run the following commands if errors arise from the terminal due to recent changes with SSH in pip (Linus and MacOS)
+Remark: In order to install using pip, one will need to run the following commands if errors arise from the terminal due to recent changes with SSH in pip (Linux and MacOS)
 
 ```
 pip install --pre subprocess32
 pip2 install numpy scipy matplotlib
 ```
 
-## Tutorial on running Unique Entity Estimation Package
+## Unique Entity Estimation Tutorial
 
-We will present very detailed steps to replicate one result presented in [our paper](https://arxiv.org/pdf/1710.02690.pdf), in particular the restaurant dataset (public dataset). Other results can be replicated in a very similar manner.
+We present detailed steps to replicate the LSHE for the Restaurant data set presented in [Chen, Shrivastava, Steorts (2018), To Appear, AoAS](https://arxiv.org/abs/1710.02690). In addition, we provide a bash script that replicates the LSHE method for all data sets. 
+
 
 Download the dataset from [here](https://hpi.de/naumann/projects/data-quality-and-cleansing/dude-duplicate-detection.html#c114715)
 Restaurant.csv is the data file containing all the records with the cluster id in the last column (same cluster id means same entity)
