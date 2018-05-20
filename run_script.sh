@@ -2,18 +2,18 @@
  g++-7 -std=c++11 C++Codes/*.cpp -o output -fopenmp
 
 # For Restaurant
- for ((i=6;i<=25;i+=6)) ; 
- 	do for ((j=1;j<=10; j++));
-  		do ./output config_restaurant.txt 1 $i; python pipeline.py --flag 0 --id $i --trainsize 0.3 --input data/Restaurant_pair.csv --goldstan data/data.csv --output log-restaurant ; 
- 	done
- done
+# for ((i=6;i<=25;i+=6)) ; 
+# 	do for ((j=1;j<=10; j++));
+#  		do ./output config_restaurant.txt 1 $i; python pipeline.py --flag 0 --id #$i --trainsize 0.3 --input data/Restaurant_pair.csv --goldstan data/data.csv --output #log-restaurant ; 
+# 	done
+# done
 
- python plot.py --input log-restaurant --gt 753
+# python plot.py --input log-restaurant --gt 753
 
 #For CD
 for ((i=6;i<=20;i+=4)) ; 
 	do for ((j=1;j<=3; j++));
- 		do ./output config_cd.txt 1 $i; python pipeline.py --flag 0 --id $i --trainsize 0.5 --input data/cd_gold.csv --goldstan data/cd.csv --delimiter ';' --output log-cd ; 
+ 		do ./output config_cd.txt 1 $i; python pipeline.py --flag 0 --id $i --trainsize 0.5 --input data/CD.csv --goldstan data/cd.csv --delimiter ';' --output log-cd ; 
 	done
 done
 

@@ -4,6 +4,8 @@ data/voter*
 test
 output
 *_pair.csv
+deprecated/
+.DS_Store
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
