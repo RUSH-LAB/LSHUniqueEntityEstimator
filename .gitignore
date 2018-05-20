@@ -1,5 +1,6 @@
 #self defined
 replicate/voter*
+data/voter*
 test
 output
 *_pair.csv
