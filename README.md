@@ -24,9 +24,6 @@ cd_gold.csv contains the corresponding matching pairs of records.
 
 - The configuration files to run the package for our paper can be found in config/ 
 
-
-
-
 Download the dataset from [here](https://hpi.de/naumann/projects/data-quality-and-cleansing/dude-duplicate-detection.html#c114715)
 Restaurant.csv is the data file containing all the records with the cluster id in the last column (same cluster id means same entity)
 
@@ -77,7 +74,7 @@ Other options that one can change include the following:
 ```
 *Noted in the delimiter option, the default delimiter for "--goldstan" file is ",", if your file uses different delimiter, which needs to be set here.
 
-The output of this will be the ratio of samples produces from step 2, estimation of the number of unique records in the data set (Restaurant.csv in this example). The output should look like the case below: 
+The output of this will be the ratio of samples produces from step 2, estimation of the number of unique records in the data set (Restaurant.csv in this example). The output will appear as the following: 
 
 
 Example output: 
@@ -88,4 +85,4 @@ ID RR LSHE
 
 LSHE is the proposed estimator. RR is the reduction ratio of the number of sampled pairs used in the estimation out of total possible pairs.
 
-An example script: run_script.sh will produce the estimation comparison plot of the in the paper. Note here "--id" option needs to change when the parameters setting for Config.txt changes to produce the plot in the paper.
+An example script run_script.sh will produce the estimation comparison plot of the similar to that in our paper. Note here "--id" option needs to change when the parameters setting for Config.txt changes to produce the plot in the paper. 
