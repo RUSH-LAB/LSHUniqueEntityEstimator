@@ -31,5 +31,7 @@ g++-5 -std=c++11 C++Codes/*.cpp -o output -fopenmp
 
 #For Syria
 for ((i=1;i<=10;i++)) ; 
-	do ./output config_syria.txt 15 10; python pipeline_for_syria.py --input syria_pair.csv --output log-syria --rawdata data/syria.csv --goldstandpair data/syria_train.csv;
+	do ./output config_syria.txt 15 10; python pipeline_for_syria.py --input syria_pair.csv --output log-syria --rawdata data/syria.csv --goldstandpair data/syria_train.csv; 
 done
+
+python count.py --input log-syria
