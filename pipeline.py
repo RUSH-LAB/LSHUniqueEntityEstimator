@@ -119,18 +119,6 @@ def estimate(candidates, Total, raw, goldPairs, trainsize, scores, flag, c):
 		hashinglabels.append(datapoint[0])
 		hashing_pair.append(candidates[i])
 
-#	for i in range(len(candidates)):
-#		a = random.randint(1, len(raw)-1)
-#		b = random.randint(1, len(raw)-1)
-#		if (a==b):
-#			b = random.randint(1, len(raw)-1)
-#		amax = max(a, b)
-#		bmin = min(a, b)
-#		datapoint = cal_score(bmin, amax, raw, len(raw[1])-1)
-#		randomresultlist.append(datapoint[1:])
-#		randomresultlabels.append(datapoint[0])
-#		random_pair.append((bmin, amax))
-
 	#train svm
 	svmt = svm.SVC(C=c)
 	svmt.fit(trainlist, trainlabels)
@@ -138,21 +126,10 @@ def estimate(candidates, Total, raw, goldPairs, trainsize, scores, flag, c):
 	#test on testing data
 	testresultlist = svmt.predict(trainlist+testlist)
 
-	#test on random selection
-#	randomselection = svmt.predict(randomresultlist)
-#	Predict_pairs_random = sum(randomselection)
-
 	#test on hashing selection
 	hashingselection = svmt.predict(hashinglist)
 	Predict_pairs_hashing = sum(hashingselection)
 
-#	logging.info('Start computing PRSE')
-
-#	random_recall = calculate_pr(randomselection,testresultlist, trainlabels+testlabels, train_pair+test_pair, random_pair, raw)
-#	if random_recall == float('Inf'):
-#		estimate_random = random_recall
-#	else:
-#		estimate_random = probability(randomselection, random_recall, random_pair, raw, int(flag))
 	logging.info('Start computing LSHE')
 
 	hashing_recall = calculate_pr( hashingselection, testresultlist,trainlabels+testlabels, train_pair+test_pair, hashing_pair, raw)
