@@ -1,4 +1,6 @@
 #self defined
+syria.csv
+syria_train.csv
 replicate/voter*
 data/voter*
 test
