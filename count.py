@@ -1,3 +1,9 @@
+# Function to count the unique entity estimation count and the standard error
+# Written by BC and RCS
+# Input: inputfile (.csv)
+# Output: Prints the unique entity estimation count and the standard error 
+# to the console
+
 import csv
 import argparse
 import numpy as np
