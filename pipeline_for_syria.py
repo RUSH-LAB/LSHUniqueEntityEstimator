@@ -51,7 +51,7 @@ def calculate_sim(inputf, standard, realpair):
 			i+=1
 	Total = len(raw)
 
-	#creat labeled pairs
+	#create labeled pairs
 	goldPairs = []
 	negPairs = []
 	with open(realpair, 'rb') as realpair:
@@ -86,7 +86,7 @@ def calculate_sim(inputf, standard, realpair):
 
 def random_forest(matrix, candidates, Allpair, Total, raw, goldPairs, negPairs, saved):
 
-	#split train and test
+	#split the training and testing data
 	posnum = 7000
 	negnum = 16000
 	split = 0.7
