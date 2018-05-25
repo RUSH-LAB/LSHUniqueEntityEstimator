@@ -30,7 +30,8 @@ g++-5 -std=c++11 C++Codes/*.cpp -o output -fopenmp
 # python plot.py --input log-voter --gt 255447
 
 #For Syria
-python preprocess.py
+# python preprocess.py
+
 for ((i=1;i<=10;i++)) ; 
 	do ./output config_syria.txt 15 10; python pipeline_for_syria.py --input syria_pair.csv --output log-syria --rawdata data/syria.csv --goldstandpair data/syria_train.csv; 
 done
