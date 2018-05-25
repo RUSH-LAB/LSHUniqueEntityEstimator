@@ -1,4 +1,4 @@
- Unique Entity Estimation Package (UEE package)
+ fasthash Package 
  =============
  
  #### Introduction
@@ -10,7 +10,7 @@ Unique entity estimation shares many fundamental challenges of entity resolution
 
 1. Clone this repository:
 	<pre>
-    git clone https://github.com/RUSH-LAB/LSHUniqueEntityEstimator.git
+    git clone https://github.com/resteorts/fasthash.git
   </pre>
   
 2. Installation
@@ -75,7 +75,7 @@ Rec1 Rec2
 ...
 ```
 
-3. Next, we feed in `Restaurant_pair.csv` and `Restaurant.csv` to our UEE algorithm as given below,
+3. Next, we feed in `Restaurant_pair.csv` and `Restaurant.csv` to our fasthash algorithm as given below,
 where there are many customizable options. 
 
 ```
@@ -116,7 +116,7 @@ Remark:  Here,  "--id" option needs to change when the parameters setting for Co
 
 #### Citation
 
-If you use our UEE algorithm package for a paper/project in academic, please use the following BibTeX entry for citation. If you are interested in using our package for propriety/industrial work, please contact the authors on the paper and the Rice/Duke licensing offices and the authors on the packages Beidi Chen (Rice), Anshumali Shrivastava (Rice), and Rebecca C. Steorts (Duke). 
+If you use our fasthash algorithm package for a paper/project in academic, please use the following BibTeX entry for citation. If you are interested in using our package for propriety/industrial work, please contact the authors on the paper and the Rice/Duke licensing offices and the authors on the packages Beidi Chen (Rice), Anshumali Shrivastava (Rice), and Rebecca C. Steorts (Duke). 
 
 ```
 @article{chen17unique,
