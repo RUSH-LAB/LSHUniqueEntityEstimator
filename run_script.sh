@@ -8,7 +8,7 @@ g++-7 -std=c++11 C++Codes/*.cpp -o output -fopenmp
  For Restaurant
  for ((i=6;i<=25;i+=6)) ; 
  	do for ((j=1;j<=10; j++));
-  		do ./output config_restaurant.txt 1 $i; python pipeline.py --flag 0 --id #$i --trainsize 0.3 --input restaurant_pair.csv --goldstan data/restaurant.csv --output #log-restaurant ; 
+  		do ./output config_restaurant.txt 1 $i; python pipeline.py --flag 0 --id $i --trainsize 0.3 --input restaurant_pair.csv --goldstan data/restaurant.csv --output log-restaurant ; 
  	done
  done
 
