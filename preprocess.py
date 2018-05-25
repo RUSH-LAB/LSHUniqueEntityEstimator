@@ -1,3 +1,5 @@
+# Pre-processing code to create traingin data for the subset of the Syrian data set
+
 import csv
 import ngram
 import random
