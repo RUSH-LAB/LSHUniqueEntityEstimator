@@ -1,3 +1,9 @@
+# Function that reads in the candidates pairs found from DOPH, finds the UEE (using training data or a SVM),
+# and reports evaluation metrics
+# Written by BC and RCS
+# Input: inputfile of raw data (.csv)
+# Output: LSHE, reduction ratio (saved to log file)
+
 import argparse
 import csv
 import random
@@ -12,7 +18,7 @@ from sklearn import linear_model, ensemble, svm
 
 def preprocess(inputf, standard, delimiter):
 	raw = {}
-	#read raw data
+	#read raw data (input file)
 	Allpair = {}
 	with open(standard, 'rb') as pairs:
 		pairs.readline()
@@ -29,7 +35,7 @@ def preprocess(inputf, standard, delimiter):
 			raw[i] = row
 			i+=1
 	Total = len(raw)
-	#save all real pairs
+	#save all real pairs 
 	goldPairs = []
 	for cluster in Allpair:
 		if len(Allpair[cluster])>1:
@@ -50,7 +56,11 @@ def preprocess(inputf, standard, delimiter):
 
 	return  candidates, Allpair, Total, raw, goldPairs, scores
 
-
+# Function to calculate the UEE 
+# Inputs: candidate pairs, the total number of records, the raw data,
+# the training data (goldPairs), the size of the training data (trainsize),
+# the scores, flag, and c. 
+# Output: The UEE
 def estimate(candidates, Total, raw, goldPairs, trainsize, scores, flag, c):
 	#split train and test
 	posnum = int(float(trainsize)*len(goldPairs))
@@ -140,7 +150,8 @@ def estimate(candidates, Total, raw, goldPairs, trainsize, scores, flag, c):
 
 	return estimate_hashing
 
-
+# ATTN: should not be hard code for just a 3 gram 
+# TODO: Should be a parameter that the user can set
 def cal_score(i, j, raw, length):
 	result = [int(raw[i][-1]==raw[j][-1])]
 	candidate1 = raw[i]
@@ -158,6 +169,10 @@ def union_find(lis, n):
 	return u.sizes()
 
 
+# Function to calculate the probability of an
+# edge or non-edge based upon our paper
+# Inputs: result, p, c_pair, flag
+# Output: The estimate of p
 def probability(result, p, c_pair, raw, flag):
 	cluster = {}
 	neighbors = {}
