@@ -118,7 +118,7 @@ Remark:  Here,  "--id" option needs to change when the parameters setting for Co
 
 #### Citation
 
-If you use our UEE algorithm package for a paper/project in academic/non-profit work, please use the following BibTeX entry for citation. If you are interested in using our package for propriety/industrial work, please contact the authors on the paper and the Rice/Duke licensing offices. 
+If you use our UEE algorithm package for a paper/project in academic, please use the following BibTeX entry for citation. If you are interested in using our package for propriety/industrial work, please contact the authors on the paper and the Rice/Duke licensing offices and the authors on the packages Beidi Chen (Rice), Anshumali Shrivastava (Rice), and Rebecca C. Steorts (Duke). 
 
 ```
 @article{chen17unique,
