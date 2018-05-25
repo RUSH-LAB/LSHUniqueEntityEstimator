@@ -1,4 +1,5 @@
 ##############################################################
+# Config file for Voter dataset
 # AnyLine containing `#' with be treated as comment.
 # The Typical Format is Variablename = Value
 ###############################################################
