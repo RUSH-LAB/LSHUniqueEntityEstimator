@@ -3,6 +3,9 @@ syria.csv
 syria_train.csv
 replicate/voter*
 data/voter*
+data/syria*
+data/ir-for-beka.csv
+data/merged-records.csv
 test
 output
 *_pair.csv
