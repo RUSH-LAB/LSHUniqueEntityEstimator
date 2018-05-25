@@ -114,3 +114,16 @@ bash run_script.sh
 ```
 
 Remark:  Here,  "--id" option needs to change when the parameters setting for Config.txt changes to produce the plot in the paper. 
+
+
+#### Citation
+
+If you use our UEE algorithm package for a paper/project in academic/non-profit work, please use the following BibTeX entry for citation. If you are interested in using our package for propriety/industrial work, please contact the authors on the paper and the Rice/Duke licensing offices. 
+
+```
+@article{chen17unique,
+Author = {Beidi Chen and Anshumali Shrivastava and Rebecca C. Steorts},
+Title = {Unique Entity Estimation with an Application to the Syrian Conflict},
+Year = {2018},
+Journal = {Annals of Applied Statistics, To Appear}}
+```
