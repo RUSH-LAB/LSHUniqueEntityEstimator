@@ -9,6 +9,7 @@ from math import floor
 import datetime
 from sklearn.svm import SVC
 
+from random import shuffle
 
 def main():
 	parser = argparse.ArgumentParser(description='Process.')
@@ -62,6 +63,8 @@ def calculate_sim(inputf, standard, realpair):
 			else:
 				negPairs.append((int(row[-2]), int(row[-1])))
 	#read candidate pairs
+	shuffle(goldPairs)
+	shuffle(negPairs)
 	matrix = {}
 	candidates = []
 	saved = []
@@ -84,9 +87,9 @@ def calculate_sim(inputf, standard, realpair):
 def random_forest(matrix, candidates, Allpair, Total, raw, goldPairs, negPairs, saved):
 
 	#split train and test
-	posnum = 20000
-	negnum = 30000
-	split = 0.5
+	posnum = 7000
+	negnum = 16000
+	split = 0.7
 	poslist = []
 	poslabels = []
 	pospair = []
@@ -136,7 +139,7 @@ def random_forest(matrix, candidates, Allpair, Total, raw, goldPairs, negPairs, 
 			new_neg+=1
 			negpair.append(negPairs[i])
 	negnum = new_neg
-
+	print posnum, negnum
 	trainlist = poslist[:int(floor(posnum*split))]+neglist[:int(floor(negnum*split))]
 	trainlabels = poslabels[:int(floor(posnum*split))]+neglabels[:int(floor(negnum*split))]
 	train_pair = pospair[:int(floor(posnum*split))]+negpair[:int(floor(negnum*split))]
@@ -155,7 +158,7 @@ def random_forest(matrix, candidates, Allpair, Total, raw, goldPairs, negPairs, 
 		# print datapoint, candidates[i]
 
 	#train lr
-	svmt = linear_model.LogisticRegression(penalty = 'l2', solver='sag',C=0.00025)
+	svmt = linear_model.LogisticRegression(penalty = 'l2', solver='sag',C=0.00035)
 	svmt.fit(trainlist, trainlabels)
 
 	#test on testing data
@@ -167,6 +170,7 @@ def random_forest(matrix, candidates, Allpair, Total, raw, goldPairs, negPairs, 
 
 	hashing_recall=0
 	hashing_recall = calculate_pr(goldPairs, hashingselection, testresultlist,trainlabels+testlabels, train_pair+test_pair, hashing_pair, raw)
+	print hashing_recall
 	estimate_hashing = probability(hashingselection, hashing_recall, hashing_pair, raw, train_pair+test_pair, trainlabels+testlabels)
 
 	return estimate_hashing
