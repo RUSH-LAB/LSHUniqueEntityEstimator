@@ -1,3 +1,8 @@
+# Function that plots the log RE versus the percent sampler size for the LSHE
+# Written by BC and RCS
+# Input: inputfile (raw data)
+# Output: plot of the log RE versus the percent sampler size for the LSHE
+
 import csv
 import argparse
 import numpy as np
@@ -10,7 +15,7 @@ def main():
 	args = parser.parse_args()
 	plot(args.input, int(args.gt))
 
-
+# plot the log RE versus the percent sample size
 def plot(inputfile, gt):
 	data = np.genfromtxt(inputfile, delimiter=' ')
 
