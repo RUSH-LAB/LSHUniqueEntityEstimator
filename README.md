@@ -10,7 +10,7 @@ Unique entity estimation shares many fundamental challenges of entity resolution
 
 1. Clone this repository:
 	<pre>
-    git clone https://github.com/resteorts/fasthash.git
+    git clone git@github.com:RUSH-LAB/LSHUniqueEntityEstimator.git
   </pre>
   
 2. Installation
