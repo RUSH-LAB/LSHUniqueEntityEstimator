@@ -19,10 +19,14 @@ This package is written in C++ and Python. We require at least g++ version 5 and
 
 3.  Prerequisites
 
+Software:
+ + C++ compiler
+ + Python 2.7
+
 The following packages are needed in Python for the code to run: 
 
 ```
-C++, Python 2, ngram, sklearn, numpy, scipy, matlib
+ngram, sklearn, numpy, scipy, matlib
 ```
 
 Remark: In order to install using pip, one will need to run the following commands if errors arise from the terminal due to recent changes with SSH in pip (Linux and MacOS)
@@ -36,7 +40,7 @@ pip2 install numpy scipy matplotlib
 
 ```
 cd C++Codes
-g++ -std=c++11 *.cpp -fopenmp (on Windows and Linux)
+g++ -o minhash -std=c++11 *.cpp -fopenmp (on Windows and Linux)
 g++ *.cpp -fopenmp (on MacOS) 
 ```
 
@@ -63,7 +67,7 @@ Use the C++ Package folder in this repository. This is a fast minhash package wh
 
 1. Update the Config file for minhash and run the program (Remember to change the outputfile name option to Restaurant_pair.csv or the particular name of your data set.) The second and third arguments are K and L respectively.
 ```
-./a.out Config.txt 1 10
+./C++Codes/minhash config_restaurant.txt 1 10
 ```
 
 The output is `Restaurant_pair.csv` where the output is candidate record pairs:
