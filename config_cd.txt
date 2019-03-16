@@ -24,7 +24,7 @@ Thresh=2
 #Give the input CSV file. First line will be ignored (assumed to be header). Every line will be treated as a #record. 
 #The line number of record will be its ID. That is the fist line after header is treated as record with ID 1 etc.
 
-Input=data/cd.csv
+Input=data/Cd.csv
 #Output File: this will contain a pair of record IDs in each line indicating a possible match. 
 
 Output=cd_pair.csv
